@@ -74,6 +74,7 @@ function validateForm() {
 function displayErrors() {
   //Rensar felmeddelanden
   errorList.innerHTML = "";
+  errors = [];
   //Vilkor för input
 
   let name = fullnameInput.value;
