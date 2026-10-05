@@ -8,21 +8,44 @@
 const form = document.querySelector("#studentform");
 const clearButton = document.querySelector("#clear");
 
-const fullnameInput = document.querySelector("#fullname");
-const emailInput = document.querySelector("#email");
-const phoneInput = document.querySelector("#phone");
-const fontSelect = document.querySelector("#font");
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const fullnameInput = document.querySelector("#fullname").value;
+  const emailInput = document.querySelector("#email").value;
+  const phoneInput = document.querySelector("#phone").value;
+  const fontSelect = document.querySelector("#font").value;
+  const errorList = document.querySelector("#errorlist");
+
+  errorList.innerHTML = "";
+
+  let errors = [];
+
+  if (fullnameInput.length === 0) {
+    errors.push("Du måste ange ditt namn");
+  }
+  if (emailInput.length === 0) {
+    errors.push("Du måste ange din E-postadress");
+  }
+  if (phoneInput.length === 0) {
+    errors.push("Du måste ange ditt telefonnummer");
+  }
+
+  //Lägg till felmeddelandenm i listan
+  errors.forEach((error) => {
+    const liEl = document.createElement("li");
+    const textNode = document.createTextNode(error);
+    liEl.appendChild(textNode);
+    errorList.appendChild(liEl);
+  });
+});
 
 const previewFullname = document.querySelector("#previewfullname");
 const previewEmail = document.querySelector("#previewemail");
 const previewPhone = document.querySelector("#previewphone");
 
-const errorList = document.querySelector("#errorlist");
 const historySection = document.querySelector("#history");
 const deleteHistoryButton = document.querySelector("#delete");
-
-// Array som används för felmeddelanden
-let errors = [];
 
 // Array som innehåller sparade studentkort
 let history = [];
