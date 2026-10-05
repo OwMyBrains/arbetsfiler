@@ -21,6 +21,9 @@ const previewPhone = document.querySelector("#previewphone");
 const historySection = document.querySelector("#history");
 const deleteHistoryButton = document.querySelector("#delete");
 
+//EventListeners
+
+//Submit för informationen
 form.addEventListener("submit", onSubmit);
 
 function onSubmit(event) {
@@ -32,7 +35,9 @@ function onSubmit(event) {
     displayErrors();
   }
 }
-
+//Rensar formuläret
+clearButton.addEventListener("click", clearCard);
+clearButton.addEventListener("click", clearForm);
 // Array som används för felmeddelanden
 let errors = [];
 
@@ -48,7 +53,6 @@ function validateForm() {
   let name = fullnameInput.value;
   let email = emailInput.value;
   let phone = phoneInput.value;
-
   if (name.length === 0) {
     return false;
   } else if (email.length === 0) {
@@ -154,6 +158,16 @@ function clearForm() {
   phoneInput.value = "";
   // Återställ formulär och studentkort
   // Rensa eventuella felmeddelanden
+}
+function clearCard() {
+  const outputName = document.querySelector("#previewfullname");
+  outputName.innerHTML = "Namn";
+
+  const outputEmail = document.querySelector("#previewemail");
+  outputEmail.innerHTML = "E-post";
+
+  const outputPhone = document.querySelector("#previewphone");
+  outputPhone.innerHTML = "Telefon";
 }
 /**
  * Raderar hela historiken.
