@@ -30,6 +30,7 @@ function onSubmit(event) {
   event.preventDefault();
   if (validateForm()) {
     createStudentCard();
+    saveHistory();
     clearForm();
   } else {
     displayErrors();
@@ -131,7 +132,15 @@ function createStudentCard() {
  * Sparar historiken i localStorage.
  */
 function saveHistory() {
+  let name = fullnameInput.value;
+  let email = emailInput.value;
+  let phone = phoneInput.value;
+  let font = fontSelect.value;
   // Spara history i localStorage
+  localStorage.setItem("name", name);
+  localStorage.setItem("email", email);
+  localStorage.setItem("phone", phone);
+  localStorage.setItem("font", font);
 }
 
 /**
