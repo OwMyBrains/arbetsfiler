@@ -55,9 +55,13 @@ let history = [];
  */
 
 function validateForm() {
-  let name = fullnameInput.value;
-  let email = emailInput.value;
-  let phone = phoneInput.value;
+  let name = fullnameInput.value.trim();
+  let email = emailInput.value.trim();
+  let phone = phoneInput.value.trim();
+
+  errors = [];
+  errorList.innerHTML = "";
+
   if (name.length === 0) {
     return false;
   } else if (email.length === 0) {
@@ -78,13 +82,12 @@ function validateForm() {
  */
 function displayErrors() {
   //Rensar felmeddelanden
-  errorList.innerHTML = "";
-  errors = [];
+
   //Vilkor för input
 
-  let name = fullnameInput.value;
-  let email = emailInput.value;
-  let phone = phoneInput.value;
+  let name = fullnameInput.value.trim();
+  let email = emailInput.value.trim();
+  let phone = phoneInput.value.trim();
 
   if (name.length === 0) {
     errors.push("Du måste ange ditt namn");
@@ -110,6 +113,9 @@ function displayErrors() {
  * Skapar ett studentkort och visar det på sidan.
  */
 function createStudentCard() {
+  errorList.innerHTML = "";
+  errors = [];
+
   let name = fullnameInput.value;
   let email = emailInput.value;
   let phone = phoneInput.value;
@@ -135,35 +141,41 @@ function createStudentCard() {
 /**
  * Sparar historiken i localStorage.
  */
-function saveHistory() {
-  let name = fullnameInput.value;
-  let email = emailInput.value;
-  let phone = phoneInput.value;
-  let font = fontSelect.value;
-  // Spara history i localStorage
-  localStorage.setItem("name", name);
-  localStorage.setItem("email", email);
-  localStorage.setItem("phone", phone);
-  localStorage.setItem("font", font);
+function saveHistory(name, email, phone, font) {
+  //Skapa användare
+  const historyArr = {
+    namn: fullnameInput.value,
+    email: emailInput.value,
+    phone: phoneInput.value,
+    font: fontSelect.value,
+  };
+  //Hämta eventuella användare från Local storage
+  let localStorageHistory = localStorage.getItem("history");
 
-  const saveHistoryArr = [
-    {
-      "Namn: ": name,
-      "E-post: ": email,
-      "Telefonnummer: ": phone,
-      "Font: ": font,
-    },
-  ];
-  localStorage.setItem("history", JSON.stringify(history));
-  history.push(saveHistoryArr);
+  let history = JSON.parse(localStorageHistory);
+  if (history === null) {
+    history = [];
+  }
+  history.push(historyArr);
+
+  let historyJson = JSON.stringify(history);
+
+  localStorage.setItem("history", historyJson);
 }
 /**
  * Läser in tidigare historik från localStorage.
  */
 function loadHistory() {
   //Hämtar lagrad info i history arrayen
-  const loadHistoryArr = JSON.parse(localStorage.getItem(history));
-  console.log(history);
+  const LocalStorageData = localStorage.getItem("history");
+  const history = JSON.parse(LocalStorageData);
+
+  if (history === null) {
+    users = [];
+  }
+  if ((history.length = 0)) {
+    return;
+  } else renderHistory();
 
   // Hämta
   // eventuell sparad historik
@@ -175,16 +187,24 @@ function loadHistory() {
  */
 function renderHistory() {
   // Example: render each object
-  history.forEach((item) => {
-    const divEl = document.createElement("div");
-    const textNode = document.createTextNode(item);
-    divEl.appendChild(textNode);
-    historySection.appendChild(divEl);
-    console.log(
-      `Namn: ${item.name}, E-post: ${item.email}, Telefonnummer: ${phone}, Font: ${item.font}`,
-    );
-  });
+  for (let i = 0; i < history.length; i++) {
+    const sectionEl = document.createElement("section");
+
+    const pEl = document.createElement("p");
+    pEl.innerHTML = `Namn: ${history[i].name}
+<br>
+E-post: ${history[i].email}
+<br>
+Telefon: ${history[i].phone}
+<br>
+Font: ${history[i].font}`;
+  }
 }
+/*  errors.forEach((error) => {
+    const liEl = document.createElement("li");
+    const textNode = document.createTextNode(error);
+    liEl.appendChild(textNode);
+    errorList.appendChild(liEl); */
 // Rensa tidigare visad historik
 // Skriv ut innehållet i history till DOM
 
@@ -193,6 +213,8 @@ function renderHistory() {
  */
 function clearForm() {
   //Rensar formuläret
+  errorList.innerHTML = "";
+  errors = [];
   fullnameInput.value = "";
   emailInput.value = "";
   phoneInput.value = "";
