@@ -32,6 +32,7 @@ function onSubmit(event) {
     createStudentCard();
     saveHistory();
     loadHistory();
+    renderHistory();
     clearForm();
   } else {
     displayErrors();
@@ -160,6 +161,7 @@ function saveHistory() {
  * Läser in tidigare historik från localStorage.
  */
 function loadHistory() {
+  //Hämtar lagrad info i history arrayen
   const loadHistoryArr = JSON.parse(localStorage.getItem(history));
   console.log(history);
 
@@ -172,14 +174,25 @@ function loadHistory() {
  * Visar historiken på sidan.
  */
 function renderHistory() {
-  // Rensa tidigare visad historik
-  // Skriv ut innehållet i history till DOM
+  // Example: render each object
+  history.forEach((item) => {
+    const divEl = document.createElement("div");
+    const textNode = document.createTextNode(item);
+    divEl.appendChild(textNode);
+    historySection.appendChild(divEl);
+    console.log(
+      `Namn: ${item.name}, E-post: ${item.email}, Telefonnummer: ${phone}, Font: ${item.font}`,
+    );
+  });
 }
+// Rensa tidigare visad historik
+// Skriv ut innehållet i history till DOM
 
 /**
  * Rensar formulär, aktuellt studentkort och felmeddelanden.
  */
 function clearForm() {
+  //Rensar formuläret
   fullnameInput.value = "";
   emailInput.value = "";
   phoneInput.value = "";
@@ -187,6 +200,7 @@ function clearForm() {
   // Rensa eventuella felmeddelanden
 }
 function clearCard() {
+  //rensar studentkortet
   const outputName = document.querySelector("#previewfullname");
   outputName.innerHTML = "Namn";
 
@@ -204,6 +218,7 @@ function deleteHistory() {
   localStorage.clear();
   //rensar history arrayen
   history.length = 0;
+  historySection.innerHTML = "";
   console.log(history);
 }
 // Radera sparad historik
