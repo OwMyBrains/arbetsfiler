@@ -31,6 +31,7 @@ function onSubmit(event) {
   if (validateForm()) {
     createStudentCard();
     saveHistory();
+    loadHistory();
     clearForm();
   } else {
     displayErrors();
@@ -39,6 +40,8 @@ function onSubmit(event) {
 //Rensar formuläret
 clearButton.addEventListener("click", clearCard);
 clearButton.addEventListener("click", clearForm);
+deleteHistoryButton.addEventListener("click", deleteHistory);
+
 // Array som används för felmeddelanden
 let errors = [];
 
@@ -152,13 +155,16 @@ function saveHistory() {
   ];
   localStorage.setItem("history", JSON.stringify(history));
   history.push(saveHistoryArr);
-  console.log(history);
 }
 /**
  * Läser in tidigare historik från localStorage.
  */
 function loadHistory() {
-  // Hämta eventuell sparad historik
+  const loadHistoryArr = JSON.parse(localStorage.getItem(history));
+  console.log(history);
+
+  // Hämta
+  // eventuell sparad historik
   // Uppdatera history
 }
 
@@ -194,9 +200,14 @@ function clearCard() {
  * Raderar hela historiken.
  */
 function deleteHistory() {
-  // Radera sparad historik
-  // Uppdatera history och visningen på sidan
+  //rensar local storage
+  localStorage.clear();
+  //rensar history arrayen
+  history.length = 0;
+  console.log(history);
 }
+// Radera sparad historik
+// Uppdatera history och visningen på sidan
 
 // Eventlyssnare
 
