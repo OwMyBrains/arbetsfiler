@@ -141,8 +141,19 @@ function saveHistory() {
   localStorage.setItem("email", email);
   localStorage.setItem("phone", phone);
   localStorage.setItem("font", font);
-}
 
+  const saveHistoryArr = [
+    {
+      "Namn: ": name,
+      "E-post: ": email,
+      "Telefonnummer: ": phone,
+      "Font: ": font,
+    },
+  ];
+  localStorage.setItem("history", JSON.stringify(history));
+  history.push(saveHistoryArr);
+  console.log(history);
+}
 /**
  * Läser in tidigare historik från localStorage.
  */
