@@ -21,8 +21,6 @@ const previewPhone = document.querySelector("#previewphone");
 const historySection = document.querySelector("#history");
 const deleteHistoryButton = document.querySelector("#delete");
 
-//EventListeners
-
 //Submit för informationen
 form.addEventListener("submit", onSubmit);
 
@@ -38,7 +36,7 @@ function onSubmit(event) {
     displayErrors();
   }
 }
-//Rensar formuläret
+//Knapparna för att rensa formuläret och historik
 clearButton.addEventListener("click", clearCard);
 clearButton.addEventListener("click", clearForm);
 deleteHistoryButton.addEventListener("click", deleteHistory);
@@ -54,14 +52,17 @@ let history = [];
  * @returns {boolean}
  */
 
+//Validering av formuläret
 function validateForm() {
   let name = fullnameInput.value.trim();
   let email = emailInput.value.trim();
   let phone = phoneInput.value.trim();
 
+  //Rensar eventuella felmeddelanden sedan tidigare
   errors = [];
   errorList.innerHTML = "";
 
+  //Vilkor för valideringen, om alla stämmer går det vidare
   if (name.length === 0) {
     return false;
   } else if (email.length === 0) {
@@ -77,18 +78,16 @@ function validateForm() {
   // Returnera resultatet (true eller false) av valideringen
 }
 
-/**
- * Visar felmeddelanden på sidan.
- */
+//Felmeddelanden vid ej korrekt i fylld input
 function displayErrors() {
   //Rensar felmeddelanden
 
-  //Vilkor för input
-
+  //Vilkor för input samt trimma bort onödiga " "
   let name = fullnameInput.value.trim();
   let email = emailInput.value.trim();
   let phone = phoneInput.value.trim();
 
+  //Felmeddelanden
   if (name.length === 0) {
     errors.push("Du måste ange ditt namn");
   }
@@ -98,20 +97,16 @@ function displayErrors() {
   if (phone.length === 0) {
     errors.push("Du måste ange ditt telefonnummer");
   }
-  //Lägg till felmeddelandenm i listan
+  //Lägg till felmeddelanden i listan som skrivs ut
   errors.forEach((error) => {
     const liEl = document.createElement("li");
     const textNode = document.createTextNode(error);
     liEl.appendChild(textNode);
     errorList.appendChild(liEl);
   });
-  // Rensa tidigare felmeddelanden
-  // Skriv ut aktuella felmeddelanden till DOM
 }
 
-/**
- * Skapar ett studentkort och visar det på sidan.
- */
+//Skapar studentkortet
 function createStudentCard() {
   errorList.innerHTML = "";
   errors = [];
@@ -121,6 +116,7 @@ function createStudentCard() {
   let phone = phoneInput.value;
   let font = fontSelect.value;
 
+  //Det som skrivs ut i studentkortet
   const outputName = document.querySelector("#previewfullname");
   outputName.innerHTML = `Namn: ${name}`;
 
@@ -131,18 +127,11 @@ function createStudentCard() {
   outputPhone.innerHTML = `Telefon: ${phone}`;
 
   document.querySelector("#preview").style.fontFamily = font;
-
-  // Hämta information från formuläret
-  // Uppdatera studentkortet
-  // Lägg till studentkortet i historiken
-  // Spara och uppdatera historiken
 }
 
-/**
- * Sparar historiken i localStorage.
- */
+//Spara informationen i history array
 function saveHistory(name, email, phone, font) {
-  //Skapa användare
+  //Skapa användare utifrån input
   const historyArr = {
     name: fullnameInput.value,
     email: emailInput.value,
@@ -156,17 +145,16 @@ function saveHistory(name, email, phone, font) {
   if (history === null) {
     history = [];
   }
+  //Skriver in användaren i arrayen
   history.push(historyArr);
 
   let historyJson = JSON.stringify(history);
 
   localStorage.setItem("history", historyJson);
 }
-/**
- * Läser in tidigare historik från localStorage.
- */
+
+//Hämtar lagrad information från JSON
 function loadHistory() {
-  //Hämtar lagrad info i history arrayen
   const LocalStorageData = localStorage.getItem("history");
   const history = JSON.parse(LocalStorageData);
 
@@ -176,24 +164,20 @@ function loadHistory() {
   if ((history.length = 0)) {
     return;
   }
-  // Hämta
-  // eventuell sparad historik
-  // Uppdatera history
 }
 
-/**
- * Visar historiken på sidan.
- */
+//Renderar historiken på sidan
 function renderHistory() {
   const LocalStorageData = localStorage.getItem("history");
   const history = JSON.parse(LocalStorageData);
 
   historySection.innerHTML = "";
 
-  // Example: render each object
+  //Skapar en sektion för historiken
   for (let i = 0; i < history.length; i++) {
     const sectionEl = document.createElement("section");
 
+    //Skapat P element för informationen
     const pEl = document.createElement("p");
 
     pEl.innerHTML = `Namn: ${history[i].name}
@@ -204,26 +188,20 @@ Telefon: ${history[i].phone}
 <br>
 Font: ${history[i].font}`;
 
+    //skriver ut i DOM
     sectionEl.appendChild(pEl);
     historySection.appendChild(sectionEl);
     sectionEl.style.fontFamily = history[i].font;
   }
 }
-// Rensa tidigare visad historik
-// Skriv ut innehållet i history till DOM
 
-/**
- * Rensar formulär, aktuellt studentkort och felmeddelanden.
- */
+//Rensar formuläret
 function clearForm() {
-  //Rensar formuläret
   errorList.innerHTML = "";
   errors = [];
   fullnameInput.value = "";
   emailInput.value = "";
   phoneInput.value = "";
-  // Återställ formulär och studentkort
-  // Rensa eventuella felmeddelanden
 }
 function clearCard() {
   //rensar studentkortet
@@ -236,9 +214,9 @@ function clearCard() {
   const outputPhone = document.querySelector("#previewphone");
   outputPhone.innerHTML = "Telefon";
 }
-/**
- * Raderar hela historiken.
- */
+
+//Raderar hela historiken.
+
 function deleteHistory() {
   //rensar local storage
   localStorage.clear();
@@ -246,20 +224,6 @@ function deleteHistory() {
   history.length = 0;
   historySection.innerHTML = "";
 }
-// Radera sparad historik
-// Uppdatera history och visningen på sidan
 
-// Eventlyssnare
-
-// När formuläret skickas:
-// - validera inmatningen
-// - skapa studentkort om valideringen lyckas
-
-// När användaren klickar på "Rensa"
-
-// När användaren klickar på "Radera historik"
-
-// När sidan laddas:
-// - läs in och visa eventuell tidigare historik
-
+//Renderar historiken vid omladdning av sidan.
 renderHistory();
