@@ -144,7 +144,7 @@ function createStudentCard() {
 function saveHistory(name, email, phone, font) {
   //Skapa användare
   const historyArr = {
-    namn: fullnameInput.value,
+    name: fullnameInput.value,
     email: emailInput.value,
     phone: phoneInput.value,
     font: fontSelect.value,
@@ -175,8 +175,7 @@ function loadHistory() {
   }
   if ((history.length = 0)) {
     return;
-  } else renderHistory();
-
+  }
   // Hämta
   // eventuell sparad historik
   // Uppdatera history
@@ -186,11 +185,17 @@ function loadHistory() {
  * Visar historiken på sidan.
  */
 function renderHistory() {
+  const LocalStorageData = localStorage.getItem("history");
+  const history = JSON.parse(LocalStorageData);
+
+  historySection.innerHTML = "";
+
   // Example: render each object
   for (let i = 0; i < history.length; i++) {
     const sectionEl = document.createElement("section");
 
     const pEl = document.createElement("p");
+
     pEl.innerHTML = `Namn: ${history[i].name}
 <br>
 E-post: ${history[i].email}
@@ -198,13 +203,12 @@ E-post: ${history[i].email}
 Telefon: ${history[i].phone}
 <br>
 Font: ${history[i].font}`;
+
+    sectionEl.appendChild(pEl);
+    historySection.appendChild(sectionEl);
+    sectionEl.style.fontFamily = history[i].font;
   }
 }
-/*  errors.forEach((error) => {
-    const liEl = document.createElement("li");
-    const textNode = document.createTextNode(error);
-    liEl.appendChild(textNode);
-    errorList.appendChild(liEl); */
 // Rensa tidigare visad historik
 // Skriv ut innehållet i history till DOM
 
@@ -241,7 +245,6 @@ function deleteHistory() {
   //rensar history arrayen
   history.length = 0;
   historySection.innerHTML = "";
-  console.log(history);
 }
 // Radera sparad historik
 // Uppdatera history och visningen på sidan
@@ -258,3 +261,5 @@ function deleteHistory() {
 
 // När sidan laddas:
 // - läs in och visa eventuell tidigare historik
+
+renderHistory();
