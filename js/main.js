@@ -150,16 +150,6 @@ function saveHistory(name, email, phone, font) {
   localStorage.setItem("history", historyJson);
 }
 
-//Hämtar lagrad information från JSON
-function loadHistory() {
-  const LocalStorageData = localStorage.getItem("history");
-  const history = JSON.parse(LocalStorageData);
-
-  if (history.length === 0) {
-    return;
-  }
-}
-
 //Renderar historiken på sidan
 function renderHistory() {
   const LocalStorageData = localStorage.getItem("history");
@@ -208,5 +198,5 @@ function deleteHistory() {
 }
 
 //Renderar historiken vid omladdning av sidan.
-loadHistory();
+
 renderHistory();
