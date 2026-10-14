@@ -29,7 +29,6 @@ function onSubmit(event) {
   if (validateForm()) {
     createStudentCard();
     saveHistory();
-    loadHistory();
     renderHistory();
     clearForm();
   } else {
@@ -37,7 +36,6 @@ function onSubmit(event) {
   }
 }
 //Knapparna för att rensa formuläret och historik
-clearButton.addEventListener("click", clearCard);
 clearButton.addEventListener("click", clearForm);
 deleteHistoryButton.addEventListener("click", deleteHistory);
 
@@ -61,7 +59,6 @@ function validateForm() {
   //Rensar eventuella felmeddelanden sedan tidigare
   errors = [];
   errorList.innerHTML = "";
-
   //Vilkor för valideringen, om alla stämmer går det vidare
   if (name.length === 0) {
     return false;
@@ -200,18 +197,6 @@ function clearForm() {
   emailInput.value = "";
   phoneInput.value = "";
 }
-function clearCard() {
-  //rensar studentkortet
-  const outputName = document.querySelector("#previewfullname");
-  outputName.innerHTML = "Namn";
-
-  const outputEmail = document.querySelector("#previewemail");
-  outputEmail.innerHTML = "E-post";
-
-  const outputPhone = document.querySelector("#previewphone");
-  outputPhone.innerHTML = "Telefon";
-}
-
 //Raderar hela historiken.
 
 function deleteHistory() {
@@ -223,4 +208,5 @@ function deleteHistory() {
 }
 
 //Renderar historiken vid omladdning av sidan.
+loadHistory();
 renderHistory();
