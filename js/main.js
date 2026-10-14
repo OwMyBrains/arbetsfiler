@@ -146,7 +146,7 @@ function saveHistory(name, email, phone, font) {
     history = [];
   }
   //Skriver in användaren i arrayen
-  history.push(historyArr);
+  history.unshift(historyArr);
 
   let historyJson = JSON.stringify(history);
 
@@ -158,10 +158,7 @@ function loadHistory() {
   const LocalStorageData = localStorage.getItem("history");
   const history = JSON.parse(LocalStorageData);
 
-  if (history === null) {
-    users = [];
-  }
-  if ((history.length = 0)) {
+  if (history.length === 0) {
     return;
   }
 }
@@ -174,7 +171,7 @@ function renderHistory() {
   historySection.innerHTML = "";
 
   //Skapar en sektion för historiken
-  for (let i = 0; i < history.length; i++) {
+  for (let i = 0; history != null && history.length > i; i++) {
     const sectionEl = document.createElement("section");
 
     //Skapat P element för informationen
